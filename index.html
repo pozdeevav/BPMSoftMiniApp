@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BPMSoft Mini App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 32px;
+            padding: 48px 32px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        .main-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e9ecef;
+            color: #2c3e66;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-text">BPMSoft Mini App</div>
+        <div class="badge">⚡ Работает в MAX</div>
+    </div>
+
+    <!-- Подключение MAX Bridge (опционально, но рекомендуется для мини-приложений) -->
+    <script src="https://cdn.jsdelivr.net/npm/@max/max-web-app@latest/dist/max-web-app.js"></script>
+    <script>
+        // Простое уведомление о готовности приложения (необязательно)
+        if (window.WebApp) {
+            console.log('MAX Bridge подключён. Приложение готово.');
+            // Можно также оповестить платформу, что приложение загружено
+            if (window.WebApp.ready) window.WebApp.ready();
+        } else {
+            console.log('Работа вне среды MAX (локальный просмотр)');
+        }
+    </script>
+</body>
+</html>
