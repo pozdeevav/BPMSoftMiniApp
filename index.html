@@ -96,10 +96,6 @@
             // При загрузке отправляем сообщение о готовности
             if (window.WebApp) {
                 console.log('MAX Bridge подключён. Приложение готово.');
-
-                if (typeof window.WebApp.ready === 'function') {
-                    window.WebApp.ready();
-                }
             } else {
                 console.log('Работа вне среды MAX (локальный просмотр)');
             }
