@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>BPMSoft Mini App</title>
     <style>
         * {
@@ -64,16 +64,39 @@
     </div>
 
     <!-- Подключение MAX Bridge (опционально, но рекомендуется для мини-приложений) -->
-    <script src="https://cdn.jsdelivr.net/npm/@max/max-web-app@latest/dist/max-web-app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@max/max-web-app@latest/dist/max-web-app.js">
+    </script>
     <script>
-        // Простое уведомление о готовности приложения (необязательно)
-        if (window.WebApp) {
-            console.log('MAX Bridge подключён. Приложение готово.');
-            // Можно также оповестить платформу, что приложение загружено
-            if (window.WebApp.ready) window.WebApp.ready();
-        } else {
-            console.log('Работа вне среды MAX (локальный просмотр)');
-        }
+        // Отправка сообщения при загрузке приложения через MAX Bridge
+        (function() {
+            if (window.WebApp) {
+                console.log('MAX Bridge подключён. Приложение готово.');
+
+                // 1. Уведомляем платформу, что приложение полностью загружено
+                if (typeof window.WebApp.ready === 'function') {
+                    window.WebApp.ready();
+                }
+
+                // 2. Отправляем пользовательское сообщение (если поддерживается)
+                var message = 'Приложение BPMSoft загружено и готово к работе';
+
+                if (typeof window.WebApp.sendMessage === 'function') {
+                    window.WebApp.sendMessage(message);
+                    console.log('Сообщение отправлено через sendMessage:', message);
+                } else if (typeof window.WebApp.sendData === 'function') {
+                    window.WebApp.sendData({
+                        type: 'loaded',
+                        text: message,
+                        timestamp: Date.now()
+                    });
+                    console.log('Сообщение отправлено через sendData:', message);
+                } else {
+                    console.log('Метод отправки сообщения не найден, но приложение готово.');
+                }
+            } else {
+                console.log('Работа вне среды MAX (локальный просмотр)');
+            }
+        })();
     </script>
 </body>
 </html>
