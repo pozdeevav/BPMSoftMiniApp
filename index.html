@@ -86,65 +86,13 @@
     <div class="container">
         <div class="main-text">BPMSoft Mini App</div>
         <div class="badge">⚡ Работает в MAX</div>
-        <button class="close-btn" id="closeAppBtn">Закрыть приложение</button>
     </div>
 
     <!-- Подключение MAX Bridge -->
-    <script src="https://cdn.jsdelivr.net/npm/@max/max-web-app@latest/dist/max-web-app.js">
+    <script src="https://st.max.ru/js/max-web-app.js"></script>
     </script>
     <script>
         (function() {
-            // Функция отправки сообщения в MAX
-            function sendMessageToMax(text) {
-                if (window.WebApp) {
-                    console.log("BPMSoft Mini App opened");
-                    return false;
-                }
-
-                // Попытка отправить через sendMessage
-                if (typeof window.WebApp.sendMessage === 'function') {
-                    window.WebApp.sendMessage(text);
-                    console.log('Сообщение отправлено (sendMessage):', text);
-                    return true;
-                }
-
-                // Альтернативный способ через sendData
-                if (typeof window.WebApp.sendData === 'function') {
-                    window.WebApp.sendData({
-                        type: 'close',
-                        text: text,
-                        timestamp: Date.now()
-                    });
-                    console.log('Сообщение отправлено (sendData):', text);
-                    return true;
-                }
-
-                console.warn('Метод отправки сообщения не найден');
-                return false;
-            }
-
-            // Функция закрытия приложения
-            function closeApp() {
-                // Отправляем сообщение о закрытии
-                const closeMessage = 'Приложение BPMSoft закрывается пользователем';
-                sendMessageToMax(closeMessage);
-
-                // Закрываем приложение через Bridge
-                if (window.WebApp && typeof window.WebApp.close === 'function') {
-                    window.WebApp.close();
-                } else {
-                    // Если close недоступен — показываем alert (для тестов вне MAX)
-                    alert('Приложение закрыто (имитация, т.к. close() не доступен)');
-                    console.warn('WebApp.close() не найден');
-                }
-            }
-
-            // Навешиваем обработчик на кнопку
-            const btn = document.getElementById('closeAppBtn');
-            if (btn) {
-                btn.addEventListener('click', closeApp);
-            }
-
             // При загрузке отправляем сообщение о готовности
             if (window.WebApp) {
                 console.log('MAX Bridge подключён. Приложение готово.');
@@ -152,9 +100,6 @@
                 if (typeof window.WebApp.ready === 'function') {
                     window.WebApp.ready();
                 }
-
-                // Отправляем стартовое сообщение
-                sendMessageToMax('Приложение BPMSoft загружено и готово к работе');
             } else {
                 console.log('Работа вне среды MAX (локальный просмотр)');
             }
