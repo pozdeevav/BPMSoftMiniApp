@@ -96,8 +96,8 @@
         (function() {
             // Функция отправки сообщения в MAX
             function sendMessageToMax(text) {
-                if (!window.WebApp) {
-                    console.log('MAX Bridge не доступен, сообщение не отправлено:', text);
+                if (window.WebApp) {
+                    console.log("BPMSoft Mini App opened");
                     return false;
                 }
 
