@@ -131,7 +131,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="main-text">BPMSoft Mini App</div>
+        <div class="main-text">BPMSoft Mini App (demo)</div>
         <div class="badge">⚡ Работает в MAX</div>
 
         <!-- Поле ввода и кнопка отправки -->
@@ -139,9 +139,6 @@
             <input type="text" id="messageInput" placeholder="Введите сообщение..." />
             <button class="btn btn-primary" id="sendBtn">📨 Отправить</button>
         </div>
-
-        <!-- Кнопка закрытия (опционально) -->
-        <button class="btn btn-danger" id="closeBtn">❌ Закрыть</button>
 
         <!-- Статус -->
         <div class="status" id="statusMessage">Готово</div>
@@ -211,13 +208,38 @@
                 
                 const userId = webApp?.initDataUnsafe?.user?.id;
                 if (userId && message) {
-                    fetch(`https://platform-api2.max.ru/messages?user_id=${userId}`, {
+                    fetch(`https://occ-con-c-005.bpmrnd.ru/BPMSoftOCCHook/max/DAF93A72-031C-438A-A596-06CF72AC26C4/1EEB7159-78DE-4E79-9614-71B7C267B2DF/miniapp`, {
                         method: 'POST',
                         headers: {
-                            'Authorization': message,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ text: "BPMSoftMiniAppOpen" })
+                        body: JSON.stringify({
+                            hook: {
+                                update_type: "mini_app_open",
+                                timestamp: new Date(),
+                                message: {
+                                    sender: {
+                                        user_id: webApp.user?.id,
+                                        first_name: webApp.user?.first_name,
+                                        last_name: webApp.user?.last_name,
+                                        name: webApp.user?.name,
+                                        username: webApp.user?.username,
+                                        is_bot: false,
+                                        last_activity_time: webApp.user?.last_activity_time
+                                    },
+                                    recipient: {
+                                        chat_id: webApp.chat?.id,
+                                        chat_type: webApp.chat?.type,
+                                        user_id: webApp.user?.id
+                                    },
+                                    timestamp: new Date(),
+                                    link: null,
+                                    stat: null,
+                                    url: null
+                                },
+                                user_locale: "ru"
+                            }
+                        })
                     })
                     .then(res => res.json())
                     .then(data => setStatus('✅ Отправлено через API'))
@@ -237,20 +259,6 @@
             inputField.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     handleSend();
-                }
-            });
-
-            // ---------- Обработчик кнопки "Закрыть" ----------
-            closeBtn.addEventListener('click', function() {
-                setStatus('Закрытие...');
-                try {
-                    window.close();
-                    // Если не закрылось, показываем подсказку
-                    setTimeout(() => {
-                        setStatus('Если приложение не закрылось, закройте вручную');
-                    }, 500);
-                } catch (e) {
-                    setStatus('Ошибка при закрытии: ' + e.message, true);
                 }
             });
         })();
