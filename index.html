@@ -219,18 +219,18 @@
                                 timestamp: new Date(),
                                 message: {
                                     sender: {
-                                        user_id: webApp.user?.id,
-                                        first_name: webApp.user?.first_name,
-                                        last_name: webApp.user?.last_name,
-                                        name: webApp.user?.name,
-                                        username: webApp.user?.username,
+                                        user_id: webApp.initDataUnsafe.user?.id,
+                                        first_name: webApp.initDataUnsafe.user?.first_name,
+                                        last_name: webApp.initDataUnsafe.user?.last_name,
+                                        name: webApp.initDataUnsafe.user?.name,
+                                        username: webApp.initDataUnsafe.user?.username,
                                         is_bot: false,
-                                        last_activity_time: webApp.user?.last_activity_time
+                                        last_activity_time: webApp.initDataUnsafe.user?.last_activity_time
                                     },
                                     recipient: {
-                                        chat_id: webApp.chat?.id,
-                                        chat_type: webApp.chat?.type,
-                                        user_id: webApp.user?.id
+                                        chat_id: webApp.initDataUnsafe.chat?.id,
+                                        chat_type: webApp.initDataUnsafe.chat?.type,
+                                        user_id: webApp.initDataUnsafe.user?.id
                                     },
                                     timestamp: new Date(),
                                     link: null,
