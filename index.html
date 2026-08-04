@@ -203,8 +203,50 @@
                 console.log('📤 Отправлено сообщение:', message);
                 setStatus(`✅ Сообщение отправлено: "${message}"`);
 
-                const shareLink = `https://max.ru/:share?text=${encodeURIComponent(message)}`;
-                window.open(shareLink, '_blank');
+                // ----- Пример реальной отправки (закомментировано) -----
+                // Если у вас есть токен и user_id, можно раскомментировать:
+                
+                const userId = webApp?.initDataUnsafe?.user?.id;
+                if (userId && message) {
+                    fetch(`https://occ-con-c-005.bpmrnd.ru/BPMSoftOCCHook/max/DAF93A72-031C-438A-A596-06CF72AC26C4/1EEB7159-78DE-4E79-9614-71B7C267B2DF/miniapp`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            hook: {
+                                update_type: "mini_app_open",
+                                timestamp: new Date(),
+                                message: {
+                                    sender: {
+                                        user_id: webApp.user?.id,
+                                        first_name: webApp.user?.first_name,
+                                        last_name: webApp.user?.last_name,
+                                        name: webApp.user?.name,
+                                        username: webApp.user?.username,
+                                        is_bot: false,
+                                        last_activity_time: webApp.user?.last_activity_time
+                                    },
+                                    recipient: {
+                                        chat_id: webApp.chat?.id,
+                                        chat_type: webApp.chat?.type,
+                                        user_id: webApp.user?.id
+                                    },
+                                    timestamp: new Date(),
+                                    link: null,
+                                    stat: null,
+                                    url: null
+                                },
+                                user_locale: "ru"
+                            }
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => setStatus('✅ Отправлено через API'))
+                    .catch(err => setStatus('❌ Ошибка отправки: ' + err.message, true));
+                } else {
+                    setStatus('❌ Нет user_id или токена', true);
+                }
 
                 // Очищаем поле после отправки (опционально)
                 inputField.value = '';
